@@ -17,7 +17,7 @@
 module Data.DHT.Type.Handle
 --    (
 --    )
-    where
+  where
 
 import Prelude (Num((+)))
 

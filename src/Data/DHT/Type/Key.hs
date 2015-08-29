@@ -14,7 +14,7 @@
 module Data.DHT.Type.Key
 --    (
 --    )
-    where
+  where
 
 import Data.Eq (Eq)
 import Data.Ord (Ord)

@@ -1,8 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE RankNTypes #-}
 -- |
 -- Module:       $HEADER$
 -- Description:  Abstract API for DHT implementations.
@@ -16,7 +14,7 @@
 module Data.DHT.Type.Result
 --    (
 --    )
-    where
+  where
 
 import Data.Typeable (Typeable)
 import GHC.Generics (Generic)
