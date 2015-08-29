@@ -9,7 +9,8 @@
 -- License:      BSD3
 --
 -- Stability:    experimental
--- Portability:  NoImplicitPrelude
+-- Portability:  DeriveDataTypeable, DeriveGeneric, NoImplicitPrelude,
+--               ExistentialQuantification, NoImplicitPrelude
 --
 -- Abstract API for DHT implementations.
 module Data.DHT.Type.Handle
@@ -30,7 +31,8 @@ data DhtHandle = forall s. DhtHandle (DhtHandle' s)
 
 -- | Low-level DHT handle that is used by DHT implementations, but not consumers.
 data DhtHandle' s = DhtHandle'
-    { join :: s -> DhtResult ()
+    { state :: s
+    , join :: s -> DhtResult ()
     , leave :: s -> DhtResult ()
     , lookup :: s -> DhtKey -> DhtResult DhtValue
     , insert :: s -> DhtKey -> DhtValue -> DhtResult ()
