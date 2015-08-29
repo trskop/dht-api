@@ -23,6 +23,8 @@ library
   hs-source-dirs:       src
   exposed-modules:
       Data.DHT
+    , Data.DHT.Type.Handle
+    , Data.DHT.Type.Key
   -- other-modules:
 
   default-language:     Haskell2010
@@ -31,6 +33,7 @@ library
   build-depends:
     -- {{{ Distributed with GHC or Haskell Platform ---------------------------
       base >=4.7 && <4.9
+    , bytestring ==0.10.*
     -- }}} Distributed with GHC or Haskell Platform ---------------------------
 
   ghc-options:          -Wall -fwarn-tabs
@@ -56,6 +59,7 @@ test-suite unit-tests
     -- {{{ Dependencies of library --------------------------------------------
     -- {{{ Distributed with GHC or Haskell Platform ---------------------------
       base >=4.7 && <4.9
+    , bytestring ==0.10.*
     -- }}} Distributed with GHC or Haskell Platform ---------------------------
     -- }}} Dependencies of library --------------------------------------------
 
