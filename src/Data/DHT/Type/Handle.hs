@@ -22,9 +22,9 @@ import Data.Typeable (Typeable)
 import GHC.Generics (Generic)
 
 import Data.DHT.Type.Key (DhtKey)
+import Data.DHT.Type.Result (DhtResult)
 
 
-data DhtResult a
 data DhtValue
 
 data DhtHandle = forall s. DhtHandle (DhtHandle' s)
