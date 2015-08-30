@@ -27,6 +27,7 @@ library
   hs-source-dirs:       src
   exposed-modules:
       Data.DHT
+    , Data.DHT.Type.Exception
     , Data.DHT.Type.Handle
     , Data.DHT.Type.Key
     , Data.DHT.Type.Result
