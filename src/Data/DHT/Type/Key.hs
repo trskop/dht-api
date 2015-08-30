@@ -16,9 +16,11 @@ module Data.DHT.Type.Key
 --    )
   where
 
-import Data.Eq (Eq)
-import Data.Ord (Ord)
 import Data.Data (Data, Typeable)
+import Data.Eq (Eq)
+import Data.Function ((.))
+import Data.Ord (Ord)
+import Data.String (IsString(fromString))
 import GHC.Generics (Generic)
 import Text.Show (Show(showsPrec))
 
@@ -30,6 +32,9 @@ newtype DhtKey = DhtKey ByteString
 
 instance Show DhtKey where
     showsPrec n (DhtKey bs) = showsPrec n bs
+
+instance IsString DhtKey where
+    fromString = DhtKey . fromString
 
 toByteString :: DhtKey -> ByteString
 toByteString (DhtKey bs) = bs
