@@ -25,6 +25,7 @@ import Data.Function ((.), ($))
 import Data.Ord (Ord((>)))
 import Data.Typeable (Typeable)
 import GHC.Generics (Generic)
+import System.IO (IO)
 import Text.Show (Show(showsPrec), showParen, showString)
 
 import Data.DHT.Type.Key (DhtKey)
@@ -50,10 +51,10 @@ instance Show DhtHandle where
 -- | Low-level DHT handle that is used by DHT implementations, but not consumers.
 data DhtHandle' s = DhtHandle'
     { state :: s
-    , join :: s -> DhtResult ()
-    , leave :: s -> DhtResult ()
-    , lookup :: s -> DhtKey -> DhtResult DhtValue
-    , insert :: s -> DhtKey -> DhtValue -> DhtResult ()
+    , join :: s -> DhtResult IO ()
+    , leave :: s -> DhtResult IO ()
+    , lookup :: s -> DhtKey -> DhtResult IO DhtValue
+    , insert :: s -> DhtKey -> DhtValue -> DhtResult IO ()
     }
   deriving (Generic, Typeable)
 

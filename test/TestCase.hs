@@ -15,9 +15,11 @@ module TestCase (tests)
 import Test.Framework (Test, testGroup)
 
 import qualified TestCase.Data.DHT as DHT (tests)
+import qualified TestCase.Data.DHT.Type.Result as DHT.Type.Result (tests)
 
 
 tests :: [Test]
 tests =
-    [ testGroup "Data.DHT" DHT.tests
+    [ testGroup "Data.DHT.Type.Result" DHT.Type.Result.tests
+    , testGroup "Data.DHT" DHT.tests
     ]

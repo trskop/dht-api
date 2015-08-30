@@ -19,6 +19,10 @@ flag pedantic
   default:              False
   manual:               True
 
+flag old-transformers
+  description:          transformers <0.4 && transformers-compat <0.4
+  default:              False
+
 library
   hs-source-dirs:       src
   exposed-modules:
@@ -34,6 +38,7 @@ library
       DeriveDataTypeable
     , DeriveGeneric
     , ExistentialQuantification
+    , LambdaCase
     , NoImplicitPrelude
     , RankNTypes
 
@@ -42,6 +47,17 @@ library
       base >=4.7 && <4.9
     , bytestring ==0.10.*
     -- }}} Distributed with GHC or Haskell Platform ---------------------------
+
+    , exceptions >=0.7 && <0.9
+
+  if flag(old-transformers)
+    build-depends:
+      -- {{{ Distributed with GHC or Haskell Platform -------------------------
+        transformers <0.4
+      -- }}} Distributed with GHC or Haskell Platform -------------------------
+      , transformers-compat <0.4
+  else
+    build-depends:      transformers ==0.4.*
 
   ghc-options:          -Wall -fwarn-tabs
 
@@ -58,6 +74,7 @@ test-suite unit-tests
   other-modules:
       TestCase
     , TestCase.Data.DHT
+    , TestCase.Data.DHT.Type.Result
 
   default-language:     Haskell2010
   other-extensions:
@@ -73,6 +90,8 @@ test-suite unit-tests
       base >=4.7 && <4.9
     , bytestring ==0.10.*
     -- }}} Distributed with GHC or Haskell Platform ---------------------------
+
+    , exceptions >=0.7 && <0.9
     -- }}} Dependencies of library --------------------------------------------
 
     -- {{{ Test-suite dependencies --------------------------------------------
@@ -88,6 +107,17 @@ test-suite unit-tests
       -- ^ There were changes in QuickCheck bounds in 0.2 branch and last one
       -- on it had a compilation failure on Hackage.
     -- }}} Test-suite dependencies --------------------------------------------
+
+  -- {{{ Conditional dependencies of library ----------------------------------
+  if flag(old-transformers)
+    build-depends:
+      -- {{{ Distributed with GHC or Haskell Platform -------------------------
+        transformers <0.4
+      -- }}} Distributed with GHC or Haskell Platform -------------------------
+      , transformers-compat <0.4
+  else
+    build-depends:      transformers ==0.4.*
+  -- }}} Conditional dependencies of library ----------------------------------
 
   ghc-options:          -Wall -fwarn-tabs
 
