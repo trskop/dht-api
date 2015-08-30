@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
 -- |
 -- Module:       $HEADER$
 -- Description:  Abstract API for DHT implementations.
@@ -10,6 +11,8 @@
 --
 -- Abstract API for DHT implementations.
 module Data.DHT
---    (
---    )
-    where
+    ( module Data.DHT.Core
+    )
+  where
+
+import Data.DHT.Core

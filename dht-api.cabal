@@ -27,6 +27,7 @@ library
   hs-source-dirs:       src
   exposed-modules:
       Data.DHT
+    , Data.DHT.Core
     , Data.DHT.Type.Exception
     , Data.DHT.Type.Handle
     , Data.DHT.Type.Key
@@ -74,7 +75,7 @@ test-suite unit-tests
   main-is:              unit-tests.hs
   other-modules:
       TestCase
-    , TestCase.Data.DHT
+    , TestCase.Data.DHT.Core
     , TestCase.Data.DHT.Type.Result
 
   default-language:     Haskell2010
