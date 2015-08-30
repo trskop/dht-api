@@ -3,14 +3,14 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 -- |
 -- Module:       $HEADER$
--- Description:  Abstract API for DHT implementations.
+-- Description:  Data type for keys used in DHT.
 -- Copyright:    (c) 2015, Jan Šipr, Matej Kollár, Peter Trško
 -- License:      BSD3
 --
 -- Stability:    experimental
 -- Portability:  NoImplicitPrelude
 --
--- Abstract API for DHT implementations.
+-- Data type for keys used in DHT.
 module Data.DHT.Type.Key
 --    (
 --    )
@@ -27,6 +27,8 @@ import Text.Show (Show(showsPrec))
 import Data.ByteString (ByteString)
 
 
+-- | DHT is a map from keys to values, this data type represents the keys
+-- accepted by DHT implementation.
 newtype DhtKey = DhtKey ByteString
   deriving (Data, Eq, Generic, Ord, Typeable)
 
@@ -36,5 +38,6 @@ instance Show DhtKey where
 instance IsString DhtKey where
     fromString = DhtKey . fromString
 
+-- | Unpack 'DhtKey' in to (strict) 'ByteString'.
 toByteString :: DhtKey -> ByteString
 toByteString (DhtKey bs) = bs
