@@ -29,17 +29,16 @@ import Text.Show (Show(showsPrec), showParen, showString)
 
 import Data.DHT.Type.Key (DhtKey)
 import Data.DHT.Type.Result (DhtResult)
+import Data.DHT.Type.Value (DhtValue)
 
-
-data DhtValue
 
 -- | Abstract DHT handle of existing DHT instance.
---
--- Mostly for debugging purposes we need to be able to print some basic
--- information about 'DhtHandle'. It is up to DHT implementation to provide
--- enough insight using 'Show' instance of its state. In example it can contain
--- things like DHT instance name and DHT node ID.
-data DhtHandle = forall s. Show s => DhtHandle (DhtHandle' s)
+data DhtHandle =
+    forall s. Show s => DhtHandle (DhtHandle' s)
+    -- ^ Mostly for debugging purposes we need to be able to print some basic
+    -- information about 'DhtHandle'. It is up to DHT implementation to provide
+    -- enough insight using 'Show' instance of its state. In example it can
+    -- contain things like DHT instance name and DHT node ID.
   deriving (Typeable)
 
 instance Show DhtHandle where

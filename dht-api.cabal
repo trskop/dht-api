@@ -26,6 +26,7 @@ library
     , Data.DHT.Type.Handle
     , Data.DHT.Type.Key
     , Data.DHT.Type.Result
+    , Data.DHT.Type.Value
   -- other-modules:
 
   default-language:     Haskell2010
