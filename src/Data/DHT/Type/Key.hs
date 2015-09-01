@@ -25,6 +25,7 @@ import GHC.Generics (Generic)
 import Text.Show (Show(showsPrec))
 
 import Data.ByteString (ByteString)
+import Data.Hashable (Hashable)
 
 
 -- | DHT is a map from keys to values, this data type represents the keys
@@ -37,6 +38,8 @@ instance Show DhtKey where
 
 instance IsString DhtKey where
     fromString = DhtKey . fromString
+
+instance Hashable DhtKey -- Uses GHC Generics.
 
 -- | Unpack 'DhtKey' in to (strict) 'ByteString'.
 toByteString :: DhtKey -> ByteString
