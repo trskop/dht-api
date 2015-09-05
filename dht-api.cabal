@@ -31,6 +31,7 @@ library
     , Data.DHT.Type.Exception
     , Data.DHT.Type.Handle
     , Data.DHT.Type.Key
+    , Data.DHT.Type.NodeId
     , Data.DHT.Type.Result
     , Data.DHT.Type.Value
   -- other-modules:
