@@ -69,7 +69,7 @@ library
         transformers <0.4
       , transformers-compat >0.4
   else
-    build-depends:      transformers ==0.4.* || transformers ==0.5.*
+    build-depends:      transformers ==0.4.* || ==0.5.*
 
   ghc-options:          -Wall -fwarn-tabs
 
@@ -142,7 +142,7 @@ test-suite unit-tests
         transformers <0.4
       , transformers-compat >0.4
   else
-    build-depends:      transformers ==0.4.* || transformers ==0.5.*
+    build-depends:      transformers ==0.4.* || ==0.5.*
   -- }}} Conditional dependencies of library ----------------------------------
 
   ghc-options:          -Wall -fwarn-tabs
