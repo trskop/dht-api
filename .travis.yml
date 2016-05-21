@@ -41,6 +41,7 @@ script:
   - cabal configure -fpedantic
   - cabal build
   - cabal configure -fpedantic --enable-tests
+  - cabal build
   - cabal test
 
   # Following line tests if sdist package is created correctly.
