@@ -4,11 +4,11 @@
 -- |
 -- Module:       $HEADER$
 -- Description:  Test cases for Data.DHT.Core module.
--- Copyright:    (c) 2015, Jan Šipr, Matej Kollár, Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár, Peter Trško
 -- License:      BSD3
 --
 -- Stability:    stable
--- Portability:  DeriveDataTypeable, LambdaCase, NoImplicitPrelude
+-- Portability:  GHC specific languge extensions.
 --
 -- Test cases for "Data.DHT.Core" module.
 module TestCase.Data.DHT.Type.NodeId (tests)

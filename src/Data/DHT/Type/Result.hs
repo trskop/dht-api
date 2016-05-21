@@ -5,17 +5,37 @@
 -- |
 -- Module:       $HEADER$
 -- Description:  Data type for DHT operation result.
--- Copyright:    (c) 2015, Jan Šipr, Matej Kollár, Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár, Peter Trško
 -- License:      BSD3
 --
 -- Stability:    experimental
--- Portability:  DeriveDataTypeable, DeriveGeneric, LambdaCase,
---               NoImplicitPrelude
+-- Portability:  GHC specific language extensions.
 --
 -- Data type for DHT operation result.
 module Data.DHT.Type.Result
---    (
---    )
+    ( DhtResult
+    , DhtResultVar(..)
+
+    -- * Smart Constructors
+    , dhtResult
+    , exception
+    , exception_
+    , result
+    , result_
+
+    -- * Processing
+    --
+    -- | Functions for handling 'DhtResult's.
+    , wait
+    , wait'
+    , wait_
+
+    -- * Running Producers
+    --
+    -- | Running actions that are producing 'DhtResult's.
+    , withFutureResult
+    , withFutureResult'
+    )
   where
 
 import Control.Concurrent.MVar

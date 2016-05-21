@@ -4,16 +4,17 @@
 -- |
 -- Module:       $HEADER$
 -- Description:  Data type for keys used in DHT.
--- Copyright:    (c) 2015, Jan Šipr, Matej Kollár, Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár, Peter Trško
 -- License:      BSD3
 --
 -- Stability:    experimental
--- Portability:  NoImplicitPrelude
+-- Portability:  GHC specific language extensions.
 --
 -- Data type for keys used in DHT.
 module Data.DHT.Type.Key
---    (
---    )
+    ( DhtKey(..)
+    , toByteString
+    )
   where
 
 import Data.Data (Data, Typeable)

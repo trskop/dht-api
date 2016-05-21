@@ -1,14 +1,15 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 -- |
 -- Module:       $HEADER$
 -- Description:  Test cases for Data.DHT.Core module.
--- Copyright:    (c) 2015, Jan Šipr, Matej Kollár, Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár; 2015-2016 Peter Trško
 -- License:      BSD3
 --
 -- Stability:    stable
--- Portability:  DeriveDataTypeable, LambdaCase, NoImplicitPrelude
+-- Portability:  GHC specific language extensions.
 --
 -- Test cases for "Data.DHT.Core" module.
 module TestCase.Data.DHT.Core (tests)
@@ -38,7 +39,7 @@ import Test.Framework.Providers.HUnit (testCase)
 import qualified Data.DHT.Core as Core
 import Data.DHT.Type.Handle
     ( DhtHandle(DhtHandle)
-    , DhtHandle'(DhtHandle', insert, join, leave, lookup, state)
+    , DhtHandle'(DhtHandle', hash, insert, join, leave, lookup, state)
     )
 import Data.DHT.Type.Result (DhtResult, DhtResultVar(DhtResultVar))
 
@@ -91,6 +92,7 @@ instance Show Operation where
 newDummyDht :: String -> DhtHandle
 newDummyDht str = DhtHandle DhtHandle'
     { state  = str
+    , hash   = \_state key         -> show key
     , join   = \_state             -> called Join
     , leave  = \_state             -> called Leave
     , lookup = \_state _key        -> called Lookup

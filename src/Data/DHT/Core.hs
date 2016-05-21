@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 -- |
 -- Module:       $HEADER$
 -- Description:  Abstract API for DHT implementations.
@@ -20,7 +21,7 @@ module Data.DHT.Core
     -- * DHT Operations
     , DhtResult
     , DhtKey
-    , DhtValue
+    , Encoding
 
     , join
     , leave
@@ -29,15 +30,14 @@ module Data.DHT.Core
     )
   where
 
-import Data.Function ((.))
-
 import Control.Monad.IO.Class (MonadIO(liftIO))
+import Data.Function (($), (.))
 
 import Data.DHT.Type.Handle (DhtHandle)
 import qualified Data.DHT.Type.Handle as Internal
 import Data.DHT.Type.Key (DhtKey)
 import Data.DHT.Type.Result (DhtResult)
-import Data.DHT.Type.Value (DhtValue)
+import Data.DHT.Type.Encoding (Encoding)
 
 
 -- | Join DHT overlay.
@@ -50,9 +50,11 @@ leave = liftIO . Internal.withDhtHandle Internal.leave
 
 -- | Lookup specified 'DhtKey' in DHT and provide its value as a result, if it
 -- is available.
-lookup :: MonadIO m => DhtHandle -> DhtKey -> DhtResult m DhtValue
-lookup = (liftIO .) . Internal.withDhtHandle Internal.lookup
+lookup :: MonadIO m => DhtHandle -> DhtKey -> DhtResult m Encoding
+lookup h k = liftIO $ Internal.forDhtHandle h $ \h' s ->
+    Internal.lookup h' s (Internal.hash h' s k)
 
--- | Insert 'DhtKey' with associated value of type 'DhtValue' in DHT.
-insert :: MonadIO m => DhtHandle -> DhtKey -> DhtValue -> DhtResult m ()
-insert = ((liftIO .) .) . Internal.withDhtHandle Internal.insert
+-- | Insert 'DhtKey' with associated value of type 'Encoding' in DHT.
+insert :: MonadIO m => DhtHandle -> DhtKey -> Encoding -> DhtResult m ()
+insert h k e = liftIO $ Internal.forDhtHandle h $ \h' s ->
+    Internal.insert h' s (Internal.hash h' s k) e

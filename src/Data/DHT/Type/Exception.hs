@@ -5,11 +5,11 @@
 -- Module:       $HEADER$
 -- Description:  Top-level exception wrapper for exceptions thrown by DHT
 --               implementation.
--- Copyright:    (c) 2015, Jan Šipr, Matej Kollár, Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár, Peter Trško
 -- License:      BSD3
 --
 -- Stability:    experimental
--- Portability:  NoImplicitPrelude
+-- Portability:  GHC specific language extensions.
 --
 -- Top-level exception wrapper for exceptions thrown by DHT implementation.
 module Data.DHT.Type.Exception
