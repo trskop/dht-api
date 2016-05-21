@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-} -- For Semigroup instance.
 {-# LANGUAGE NoImplicitPrelude #-}
@@ -21,7 +22,11 @@ import Data.Semigroup (Semigroup)
 import Data.Typeable (Typeable)
 
 import Data.Default.Class (Default(def))
+#if MIN_VERSION_bytestring(0,10,2)
 import qualified Data.ByteString.Builder as ByteString (Builder)
+#else
+import qualified Data.ByteString.Lazy.Builder as ByteString (Builder)
+#endif
 
 
 newtype Encoding = Encoding {fromEncoding :: ByteString.Builder}
