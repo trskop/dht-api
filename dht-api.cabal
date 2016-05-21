@@ -24,7 +24,7 @@ flag pedantic
   manual:               True
 
 flag old-transformers
-  description:          transformers <0.4 && transformers-compat <0.4
+  description:          transformers <0.4 && transformers-compat >0.4
   default:              False
 
 library
@@ -66,12 +66,10 @@ library
 
   if flag(old-transformers)
     build-depends:
-      -- {{{ Distributed with GHC or Haskell Platform -------------------------
         transformers <0.4
-      -- }}} Distributed with GHC or Haskell Platform -------------------------
-      , transformers-compat <0.4
+      , transformers-compat >0.4
   else
-    build-depends:      transformers ==0.4.*
+    build-depends:      transformers ==0.4.* || transformers ==0.5.*
 
   ghc-options:          -Wall -fwarn-tabs
 
@@ -141,12 +139,10 @@ test-suite unit-tests
 
   if flag(old-transformers)
     build-depends:
-      -- {{{ Distributed with GHC or Haskell Platform -------------------------
         transformers <0.4
-      -- }}} Distributed with GHC or Haskell Platform -------------------------
-      , transformers-compat <0.4
+      , transformers-compat >0.4
   else
-    build-depends:      transformers ==0.4.*
+    build-depends:      transformers ==0.4.* || transformers ==0.5.*
   -- }}} Conditional dependencies of library ----------------------------------
 
   ghc-options:          -Wall -fwarn-tabs
