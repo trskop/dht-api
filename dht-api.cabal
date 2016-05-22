@@ -35,6 +35,7 @@ library
     , Data.DHT.Type.Encoding
     , Data.DHT.Type.Exception
     , Data.DHT.Type.Handle
+    , Data.DHT.Type.Hash
     , Data.DHT.Type.Key
     , Data.DHT.Type.NodeId
     , Data.DHT.Type.Result

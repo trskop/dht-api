@@ -35,6 +35,14 @@ import Data.Function (($), (.))
 
 import Data.DHT.Type.Handle (DhtHandle)
 import qualified Data.DHT.Type.Handle as Internal
+    ( forDhtHandle
+    , hash
+    , insert
+    , join
+    , leave
+    , lookup
+    , withDhtHandle
+    )
 import Data.DHT.Type.Key (DhtKey)
 import Data.DHT.Type.Result (DhtResult)
 import Data.DHT.Type.Encoding (Encoding)
