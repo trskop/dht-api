@@ -14,6 +14,7 @@
 -- TODO
 module Data.DHT.Type.Hash
     ( DhtHash(..)
+    , Bound(..)
     , succNum
     , predNum
     )
