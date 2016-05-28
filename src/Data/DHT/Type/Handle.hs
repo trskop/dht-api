@@ -53,7 +53,14 @@ instance Show DhtHandle where
 -- | Low-level DHT handle that is used by DHT implementations, but not consumers.
 data DhtHandle' s h = DhtHandle'
     { state :: !s
+    -- ^ Internal state of the DHT implementation.
+
     , hash :: !(s -> DhtKey -> h)
+    -- ^ Having hash function being part of the interface allows implementation
+    -- to decide where the hashing function is evaluated. In example, having
+    -- @hash = const id@ will force @h = DhtKey@, and DHT implementation will
+    -- be handling the hashing.
+
     , join :: !(s -> DhtResult IO ())
     , leave :: !(s -> DhtResult IO ())
     , lookup :: !(s -> h -> DhtResult IO Encoding)
