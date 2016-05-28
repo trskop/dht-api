@@ -77,6 +77,7 @@ withDhtHandle
     -> DhtHandle
     -> a
 withDhtHandle f (DhtHandle h@DhtHandle'{state = s}) = f h s
+{-# INLINE withDhtHandle #-}
 
 -- | Helper function that simplifies unwrapping 'DhtHandle'. Flipped version of
 -- 'withDhtHandle'.
@@ -87,3 +88,4 @@ forDhtHandle
     -- 'Show' is the only thing we are allowed to know about internal state.
     -> a
 forDhtHandle (DhtHandle h@DhtHandle'{state = s}) f = f h s
+{-# INLINE forDhtHandle #-}
