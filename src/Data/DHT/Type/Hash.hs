@@ -24,7 +24,7 @@ import Prelude (Bounded(maxBound, minBound), Integral, Num((-), (+)))
 
 import Control.Applicative (liftA2)
 import Control.Arrow ((***))
-import Data.Bool (Bool, (&&), (||), otherwise)
+import Data.Bool (Bool(False), (&&), (||), otherwise)
 import Data.Eq (Eq)
 import Data.Functor (Functor(fmap))
 import Data.Ord (Ord((<=)))
@@ -76,8 +76,9 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
     -- 0 ∈ (7, 1].
     inInterval :: (Bound a, Bound a) -> a -> Bool
     inInterval bs
+      | isEmpty      = False
       | minb <= maxb = unsafeInInterval bs'
-      | otherwise =
+      | otherwise    =
         -- We need to split the interval when bounds include the point where
         -- "end" and "beginning" of the DHT circle meet. In example, lets have
         -- a hash space 0, 1, ... 9, then interval (7, 1] is first converted in
@@ -90,6 +91,13 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
         -- conversion.
         bs'@(minb, maxb) = (bound succ *** bound pred) bs
         (<||>) = liftA2 (||)
+
+        -- Hash space is discrete, therefore (n, n] = [n, n) = {}, i.e. empty
+        -- interval.
+        isEmpty = case bs of
+            (Including b1, Excluding b2) -> b1 == b2
+            (Excluding b1, Including b2) -> b1 == b2
+            _                            -> False
 
     -- | Assumes that @lowerBound < upperBound@ in
     -- @'unsafeInInterval' (lowerBound, upperBound)@.
