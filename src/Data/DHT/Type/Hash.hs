@@ -25,7 +25,8 @@ import Prelude (Bounded(maxBound, minBound), Integral, Num((-), (+)))
 import Control.Applicative (liftA2)
 import Control.Arrow ((***))
 import Data.Bool (Bool(False), (&&), (||), otherwise)
-import Data.Eq (Eq)
+import Data.Eq (Eq((==)))
+import Data.Function (const)
 import Data.Functor (Functor(fmap))
 import Data.Ord (Ord((<=)))
 import Data.Typeable (Typeable)
@@ -76,7 +77,7 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
     -- 0 ∈ (7, 1].
     inInterval :: (Bound a, Bound a) -> a -> Bool
     inInterval bs
-      | isEmpty      = False
+      | isEmpty      = const False
       | minb <= maxb = unsafeInInterval bs'
       | otherwise    =
         -- We need to split the interval when bounds include the point where
@@ -93,7 +94,7 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
         (<||>) = liftA2 (||)
 
         -- Hash space is discrete, therefore (n, n] = [n, n) = {}, i.e. empty
-        -- interval.
+        -- interval and not the whole hash space.
         isEmpty = case bs of
             (Including b1, Excluding b2) -> b1 == b2
             (Excluding b1, Including b2) -> b1 == b2
