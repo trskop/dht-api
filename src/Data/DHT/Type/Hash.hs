@@ -17,6 +17,7 @@ module Data.DHT.Type.Hash
     , Bound(..)
     , succNum
     , predNum
+    , isWholeSpace
     )
   where
 
@@ -24,8 +25,8 @@ import Prelude (Bounded(maxBound, minBound), Integral, Num((-), (+)))
 
 import Control.Applicative (liftA2)
 import Control.Arrow ((***))
-import Data.Bool (Bool(False), (&&), (||), otherwise)
-import Data.Eq (Eq((==)))
+import Data.Bool (Bool(False, True), (&&), (||), otherwise)
+import Data.Eq (Eq((/=), (==)))
 import Data.Function (const)
 import Data.Functor (Functor(fmap))
 import Data.Ord (Ord((<=)))
@@ -75,30 +76,57 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
     -- function handles the circular notion of hash space correctly. In example
     -- lets have a hash space 0, 1, ... 9 then for example this predicate holds
     -- 0 ∈ (7, 1].
+    --
+    -- Following hold:
+    --
+    -- @
+    -- forall x,y ∈ I.
+    --     x < y => ((y, x) = I \ [x, y]
+    --             ∧ (y, x] = I \ (x, y]
+    --             ∧ [y, x) = I \ [x, y)
+    --             ∧ [y, x] = I \ (x, y))
+    -- @
+    --
+    -- @
+    -- forall x ∈ I.
+    --       (x, x] = [x, x) = I
+    --     ∧ [x, x] = {x}
+    --     ∧ (x, x) = I \ {x}
+    -- @
     inInterval :: (Bound a, Bound a) -> a -> Bool
-    inInterval bs
-      | isEmpty      = const False
-      | minb <= maxb = unsafeInInterval bs'
-      | otherwise    =
-        -- We need to split the interval when bounds include the point where
-        -- "end" and "beginning" of the DHT circle meet. In example, lets have
-        -- a hash space 0, 1, ... 9, then interval (7, 1] is first converted in
-        -- to inclusive interval [8, 1] and then split in to two sub-intervals
-        -- [8, 9] and [0, 1].
-        unsafeInInterval (minb, maxBound)
-        <||> unsafeInInterval (minBound, maxb)
-      where
-        -- Bounds (minb, maxb) need to be always inclusive, hence the
-        -- conversion.
-        bs'@(minb, maxb) = (bound succ *** bound pred) bs
-        (<||>) = liftA2 (||)
+    inInterval bs = case bs of
+        (Including b1, Excluding b2)
+          | b1 == b2  -> const True     -- [x, x) = I
+          | otherwise -> inInterval'
 
-        -- Hash space is discrete, therefore (n, n] = [n, n) = {}, i.e. empty
-        -- interval and not the whole hash space.
-        isEmpty = case bs of
-            (Including b1, Excluding b2) -> b1 == b2
-            (Excluding b1, Including b2) -> b1 == b2
-            _                            -> False
+        (Excluding b1, Including b2)
+          | b1 == b2  -> const True     -- (x, x] = I
+          | otherwise -> inInterval'
+
+        (Including b1, Including b2)
+          | b1 == b2  -> (== b1)        -- [x, x] = {x}
+          | otherwise -> inInterval'
+
+        -- forall x.
+        (Excluding b1, Excluding b2)
+          | b1 == b2  -> (/= b1)        -- (x, x) = I \ {x}
+          | otherwise -> inInterval'
+      where
+        inInterval'
+          | minb <= maxb = unsafeInInterval bs'
+          | otherwise    =
+            -- We need to split the interval when bounds include the point
+            -- where "end" and "beginning" of the DHT circle meet. In example,
+            -- lets have a hash space 0, 1, ... 9, then interval (7, 1] is
+            -- first converted in to inclusive interval [8, 1] and then split
+            -- in to two sub-intervals [8, 9] and [0, 1].
+            unsafeInInterval (minb, maxBound)
+            <||> unsafeInInterval (minBound, maxb)
+          where
+            -- Bounds (minb, maxb) need to be always inclusive, hence the
+            -- conversion.
+            bs'@(minb, maxb) = (bound succ *** bound pred) bs
+            (<||>) = liftA2 (||)
 
     -- | Assumes that @lowerBound < upperBound@ in
     -- @'unsafeInInterval' (lowerBound, upperBound)@.
@@ -110,3 +138,15 @@ succNum = (+ 1)
 
 predNum :: (Bounded a, Integral a) => a -> a
 predNum n = n - 1
+
+-- | Predicate that checks if the bounds represent the whole identifier space
+-- @I@, which can be represented as:
+--
+-- @
+-- forall x ∈ I. (x, x] = [x, x) = I
+-- @
+isWholeSpace :: Eq a => (Bound a, Bound a) -> Bool
+isWholeSpace = \case
+    (Including b1, Excluding b2) -> b1 == b2
+    (Excluding b1, Including b2) -> b1 == b2
+    _                            -> False
