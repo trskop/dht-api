@@ -81,17 +81,17 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
     --
     -- @
     -- forall x,y ∈ I.
-    --     x < y => ((y, x) = I \ [x, y]
-    --             ∧ (y, x] = I \ (x, y]
-    --             ∧ [y, x) = I \ [x, y)
-    --             ∧ [y, x] = I \ (x, y))
+    --     x \< y =\> ((y, x) = I \\ [x, y]
+    --             ∧ (y, x] = I \\ (x, y]
+    --             ∧ [y, x) = I \\ [x, y)
+    --             ∧ [y, x] = I \\ (x, y))
     -- @
     --
     -- @
     -- forall x ∈ I.
     --       (x, x] = [x, x) = I
     --     ∧ [x, x] = {x}
-    --     ∧ (x, x) = I \ {x}
+    --     ∧ (x, x) = I \\ {x}
     -- @
     inInterval :: (Bound a, Bound a) -> a -> Bool
     inInterval bs = case bs of
@@ -107,7 +107,6 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
           | b1 == b2  -> (== b1)        -- [x, x] = {x}
           | otherwise -> inInterval'
 
-        -- forall x.
         (Excluding b1, Excluding b2)
           | b1 == b2  -> (/= b1)        -- (x, x) = I \ {x}
           | otherwise -> inInterval'
