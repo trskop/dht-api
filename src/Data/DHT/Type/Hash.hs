@@ -140,10 +140,10 @@ class (Bounded a, Eq a, Ord a, Show a) => DhtHash a where
     unsafeInInterval :: (a, a) -> a -> Bool
     unsafeInInterval (minb, maxb) a = minb <= a && a <= maxb
 
-succNum :: (Bounded a, Integral a) => a -> a
+succNum :: Integral a => a -> a
 succNum = (+ 1)
 
-predNum :: (Bounded a, Integral a) => a -> a
+predNum :: Integral a => a -> a
 predNum n = n - 1
 
 -- | Predicate that checks if the bounds represent the whole identifier space
