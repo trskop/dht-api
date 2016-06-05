@@ -35,6 +35,14 @@ import GHC.Generics (Generic)
 import Text.Show (Show)
 
 
+-- | Represents one bound of an interval.
+--
+-- @
+-- [x, y] = ('Including' x, 'Including' y)
+-- [x, y) = ('Including' x, 'Excluding' y)
+-- (x, y] = ('Excluding' x, 'Including' y)
+-- (x, y) = ('Excluding' x, 'Excluding' y)
+-- @
 data Bound a = Including a | Excluding a
   deriving (Eq, Generic, Ord, Show, Typeable)
 
