@@ -1,5 +1,4 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 -- |
 -- Module:       $HEADER$
@@ -14,11 +13,12 @@
 module TestCase.Data.DHT.Type.Result (tests)
   where
 
+import Control.Applicative (pure)
 import Control.Exception (Exception(fromException), SomeException)
-import Control.Monad (Monad((>>=), return))
+import Control.Monad (Monad((>>=)))
 import Data.Bool (Bool(False, True))
 import Data.Eq (Eq)
-import Data.Function (($))
+import Data.Functor ((<$))
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.Monoid ((<>))
 import Data.Typeable (Typeable)
@@ -52,10 +52,9 @@ handleExceptionTest =
   where
     handler :: SomeException -> IO Bool
     handler ex = case fromException ex of
-        Just DummyException -> return True
-        Nothing             -> do
-            assertFailure $ "Received unexpected exception: " <> show ex
-            return False
+        Just DummyException -> pure True
+        Nothing             ->
+            False <$ assertFailure ("Received unexpected exception: " <> show ex)
 
     checkResult = assertBool
         "Exception handler wasn't invoked, which it should have been."
@@ -64,7 +63,7 @@ handleResultTest :: Assertion
 handleResultTest = result True >>= wait' handler >>= checkResult
   where
     handler :: SomeException -> IO Bool
-    handler _exception = return False
+    handler _exception = pure False
 
     checkResult = assertBool
         "Exception handler was invoked, which it wasn't supposed to."

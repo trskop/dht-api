@@ -5,7 +5,7 @@
 -- |
 -- Module:       $HEADER$
 -- Description:  Data type for DHT operation result.
--- Copyright:    (c) 2015 Jan Šipr, Matej Kollár, Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár; 2015-2018 Peter Trško
 -- License:      BSD3
 --
 -- Stability:    experimental
@@ -46,10 +46,11 @@ import Control.Concurrent.MVar
     , tryPutMVar
     )
 import Control.Exception (Exception(toException), SomeException)
-import Control.Monad (Monad(return), liftM, void)
+import Control.Applicative (pure)
+import Control.Monad ((>>=))
 import Data.Either (Either(Left, Right))
 import Data.Function ((.), ($))
-import Data.Functor ((<$>))
+import Data.Functor ((<$>), fmap, void)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.Tuple (snd)
 import Data.Typeable (Typeable)
@@ -101,9 +102,9 @@ withFutureResult'
 withFutureResult' f = do
     var <- liftIO $ dhtResult Nothing
     r <- f $ liftIO . void . tryPutResult var
-    return (r, var)
+    pure (r, var)
   where
-    tryPutResult (DhtResultVar v) x = tryPutMVar v $ case x of
+    tryPutResult (DhtResultVar v) = tryPutMVar v . \case
         Left  e -> Left (toException e)
         Right r -> Right r
 
@@ -120,7 +121,7 @@ withFutureResult
     -- argument. If it tries to produce multiple values, then only the first
     -- one is accepted and the rest is thrown away.
     -> DhtResult m a
-withFutureResult = liftM snd . withFutureResult'
+withFutureResult = fmap snd . withFutureResult'
 
 -- | Create 'DhtResult' filled with specified exception.
 exception :: (Exception e, MonadIO m) => e -> DhtResult m a
@@ -156,11 +157,10 @@ wait'
     -> DhtResultVar a
     -- ^ Future of DHT operation.
     -> m a
-wait' exceptionHandler (DhtResultVar var) = do
-    r <- liftIO $ readMVar var
-    case r of
+wait' exceptionHandler (DhtResultVar var) =
+    liftIO (readMVar var) >>= \case
         Left ex -> exceptionHandler ex
-        Right a -> return a
+        Right a -> pure a
 {-# INLINEABLE wait' #-}
 {-# SPECIALIZE
     wait' :: (SomeException -> IO a) -> DhtResultVar a -> IO a

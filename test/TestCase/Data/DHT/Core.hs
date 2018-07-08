@@ -1,11 +1,10 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- |
 -- Module:       $HEADER$
 -- Description:  Test cases for Data.DHT.Core module.
--- Copyright:    (c) 2015 Jan Šipr, Matej Kollár; 2015-2016 Peter Trško
+-- Copyright:    (c) 2015 Jan Šipr, Matej Kollár; 2015-2018 Peter Trško
 -- License:      BSD3
 --
 -- Stability:    stable
@@ -58,7 +57,7 @@ tests =
     keyExpected = error "Expected DHT key."
     valueExpected = error "Expected DHT value."
 
-testCall :: Operation -> (DhtHandle -> DhtResult IO a) -> Assertion
+testCall :: Operation -> (DhtHandle String a -> DhtResult IO a) -> Assertion
 testCall op f = do
     DhtResultVar var <- f $ newDummyDht "Dummy DHT implementation."
     possiblyResult <- tryReadMVar var
@@ -89,7 +88,7 @@ instance Show Operation where
       where
         operationToString = List.map Char.toLower . showConstr . toConstr
 
-newDummyDht :: String -> DhtHandle
+newDummyDht :: String -> DhtHandle String a
 newDummyDht str = DhtHandle DhtHandle'
     { state  = str
     , hash   = \_state key         -> show key

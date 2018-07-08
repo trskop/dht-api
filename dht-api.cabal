@@ -11,7 +11,7 @@ license:                BSD3
 license-file:           LICENSE
 author:                 Jan Šipr, Matej Kollár, Peter Trško
 maintainer:             peter.trsko@gmail.com
-copyright:              (c) 2015 Jan Šipr, Matej Kollár; 2015-2016 Peter Trško
+copyright:              (c) 2015 Jan Šipr, Matej Kollár; 2015-2018 Peter Trško
 category:               Data
 build-type:             Simple
 cabal-version:          >=1.10
@@ -32,12 +32,9 @@ library
   exposed-modules:
       Data.DHT
     , Data.DHT.Core
-    , Data.DHT.Type.Encoding
     , Data.DHT.Type.Exception
     , Data.DHT.Type.Handle
     , Data.DHT.Type.Hash
-    , Data.DHT.Type.Key
-    , Data.DHT.Type.NodeId
     , Data.DHT.Type.Result
   -- other-modules:
 
@@ -81,24 +78,13 @@ library
 --    -Werror
 
 test-suite unit-tests
-  hs-source-dirs:       src, test
+  hs-source-dirs:       test
   type:                 exitcode-stdio-1.0
   main-is:              unit-tests.hs
   other-modules:
       TestCase
     , TestCase.Data.DHT.Core
     , TestCase.Data.DHT.Type.Result
-
-    -- {{{ Library modules ----------------------------------------------------
-    , Data.DHT
-    , Data.DHT.Core
-    , Data.DHT.Type.Encoding
-    , Data.DHT.Type.Exception
-    , Data.DHT.Type.Handle
-    , Data.DHT.Type.Key
-    , Data.DHT.Type.NodeId
-    , Data.DHT.Type.Result
-    -- }}} Library modules ----------------------------------------------------
 
   default-language:     Haskell2010
   other-extensions:
@@ -118,6 +104,8 @@ test-suite unit-tests
     , hashable >=1.2.1 && <1.3
     , text >=1.1 && <2
     -- }}} Dependencies of library --------------------------------------------
+
+    , dht-api
 
     -- {{{ Test-suite dependencies --------------------------------------------
     , HUnit >=1.2 && <2
